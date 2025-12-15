@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Realtime AI Session</title>
+</head>
+<body>
+
+<h2>Realtime AI Backend Demo</h2>
+
+<button onclick="start()">Start Session</button>
+<button onclick="send()">Send Message</button>
+<button onclick="stop()">End Session</button>
+
+<pre id="output"></pre>
+
+<script>
+let ws;
+
+function start() {
+  ws = new WebSocket("ws://127.0.0.1:8000/ws/session/demo-session");
+
+  ws.onopen = () => {
+    output.innerText += "Connected\n";
+  };
+
+  ws.onmessage = (e) => {
+    output.innerText += e.data + " ";
+  };
+
+  ws.onclose = () => {
+    output.innerText += "\nSession closed";
+  };
+}
+
+function send() {
+  ws.send("Hello AI, explain this session");
+}
+
+function stop() {
+  ws.close();
+}
+</script>
+
+</body>
+</html>
